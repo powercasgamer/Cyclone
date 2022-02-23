@@ -24,7 +24,6 @@
  */
 package net.deltapvp.cyclone.module.impl;
 
-import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -63,10 +62,9 @@ public class CommandModule extends AbstractModule {
 
     @Override
     public void reload() {
-        this.patternString = plugin.getConfig().getStringList("modules.command.commands")
-            .stream()
-            .filter(f -> (!(f == null)) || (f != null && !f.isEmpty()))
-            .map(s -> String.format("(?:%s)", s)).collect(Collectors.joining("|"));
+        this.patternString = plugin.getConfig().getStringList("modules.command.commands").stream()
+                .filter(f -> (!(f == null)) || (f != null && !f.isEmpty()))
+                .map(s -> String.format("(?:%s)", s)).collect(Collectors.joining("|"));
         this.pattern = Pattern.compile(patternString, Pattern.CASE_INSENSITIVE);
     }
 }

@@ -42,7 +42,7 @@ public final class Cyclone extends JavaPlugin {
         INSTANCE = this;
         saveDefaultConfig();
         setupModules();
-        modules.forEach(Module::onLoad);    
+        modules.forEach(Module::onLoad);
     }
 
     @Override
@@ -52,23 +52,24 @@ public final class Cyclone extends JavaPlugin {
             @Override
             public boolean onCommand(CommandSender sender, Command command, String label,
                     String[] args) {
-                if (!sender.hasPermission("cyclone.reload")) return false;
+                if (!sender.hasPermission("cyclone.reload"))
+                    return false;
 
                 reloadConfig();
                 modules.forEach(Module::reload);
                 sender.sendMessage("reloaded");
                 return true;
             }
-            
+
         });
 
-        modules.forEach(Module::onEnable);    
+        modules.forEach(Module::onEnable);
     }
 
     @Override
     public void onDisable() {
-        modules.forEach(Module::onDisable);  
-        INSTANCE = null;  
+        modules.forEach(Module::onDisable);
+        INSTANCE = null;
     }
 
     public static Cyclone getInstance() {

@@ -25,20 +25,20 @@
 package net.deltapvp.cyclone.module.api;
 
 import java.util.logging.Logger;
-import net.deltapvp.cyclone.Cyclone;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
+import net.deltapvp.cyclone.Cyclone;
 
 public abstract class AbstractModule implements Module, Listener {
-	
+
 	private final String name;
 	protected final Logger logger;
 	protected final Plugin plugin;
 	protected final String bypassPerm;
 	protected final String punishCmd;
-	
+
 	protected AbstractModule(Cyclone plugin, String name) {
 		this.plugin = plugin;
 		this.name = name;
@@ -46,16 +46,16 @@ public abstract class AbstractModule implements Module, Listener {
 		this.punishCmd = plugin.getConfig().getString("modules." + name.toLowerCase() + ".punish");
 		this.logger = Logger.getLogger(plugin.getLogger().getName() + "-" + name);
 	}
-	
+
 	@Override
 	public void onEnable() {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 		logger.info(() -> "Registered successfully");
 	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
 	@Override
 	public boolean canBypass(Player player) {
@@ -63,7 +63,9 @@ public abstract class AbstractModule implements Module, Listener {
 	}
 
 	public void punishPlayer(Player player) {
-		if (punishCmd == null || punishCmd.isEmpty()) return;
-		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), punishCmd.replace("%player%", player.getName()));
+		if (punishCmd == null || punishCmd.isEmpty())
+			return;
+		Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+				punishCmd.replace("%player%", player.getName()));
 	}
 }

@@ -27,20 +27,16 @@ package net.deltapvp.cyclone.module.api;
 import org.bukkit.entity.Player;
 
 public interface Module {
-	
-	default void onLoad() {
 
-    }
-    
-	void onEnable();
+	default void onLoad() {}
 
-	default void onDisable() {
+	default void onEnable() {}
 
-    }
-
-	void reload();
+	default void onDisable() {}
 
 	default boolean canBypass(Player player) {
 		return false;
 	}
+
+	void reload();
 }
