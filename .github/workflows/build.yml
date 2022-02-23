@@ -52,10 +52,11 @@ jobs:
 
       - name: Archive plugin jars on GitHub
         uses: actions/upload-artifact@master
-        if: ${{ success() }}
+        if: success()
         with:
           name: Cyclone plugin jars
-          path: build/libs/
+          path: build/libs/**
+          if-no-files-found: error
 
       - name: Cleanup Gradle Cache
       # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
