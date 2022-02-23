@@ -34,7 +34,7 @@ project.ext.majorVersion = "1"
 project.ext.minorVersion = "0"
 project.ext.patchVersion = "0"
 project.ext.buildVersion = determineBuildVersion()
-project.ext.versionStatus = "-SNAPSHOT"
+project.ext.versionStatus = ""
 project.ext.apiVersion = project.ext.majorVersion + "." + project.ext.minorVersion + "." + project.ext.patchVersion
 project.ext.fullVersion = project.ext.apiVersion + "-b" + project.ext.buildVersion + project.ext.versionStatus
 
