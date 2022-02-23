@@ -1,0 +1,8 @@
+modules:
+  command:
+    bypass: "cyclone.bypass.command"
+    punish: "ban %player% Violating filter"
+    enabled: true
+    commands:
+      - "(?:mv)(?:h)(?:elp)?"
+      - "(?:mv)(?:s)(?:earch)?"

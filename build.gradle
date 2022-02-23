@@ -1,0 +1,48 @@
+plugins {
+    id("java")
+    id("java-library")
+    id("visual-studio")
+    alias(libs.plugins.indra)
+    alias(libs.plugins.indra.git)
+    alias(libs.plugins.indra.crossdoc)
+    alias(libs.plugins.indra.publishing)
+    alias(libs.plugins.shadow)
+    alias(libs.plugins.licenser)
+    alias(libs.plugins.gitproperties)
+    alias(libs.plugins.javadoc)
+}
+
+def determineBuildVersion = {
+    if (indraGit == null) {
+        return 0
+    }
+    if (!indraGit.isPresent()) {
+        return 0
+    }
+    if (indraGit.describe() == null) {
+        return 0
+    }
+    if (!indraGit.describe().contains("-")) {
+        return 0
+    }
+    return indraGit.describe().split("-")[1]
+}
+
+defaultTasks("shadowjar")
+
+project.ext.majorVersion = "1"
+project.ext.minorVersion = "0"
+project.ext.patchVersion = "0"
+project.ext.buildVersion = determineBuildVersion()
+project.ext.versionStatus = "-SNAPSHOT"
+project.ext.apiVersion = project.ext.majorVersion + "." + project.ext.minorVersion + "." + project.ext.patchVersion
+project.ext.fullVersion = project.ext.apiVersion + "-b" + project.ext.buildVersion + project.ext.versionStatus
+
+group("net.deltapvp")
+version("${project.ext.apiVersion}${project.ext.versionStatus}")
+apply from: "$rootDir/gradle/plugins.gradle"
+apply from: "$rootDir/gradle/common.gradle"
+
+dependencies {
+    compileOnly("com.destroystokyo.paper:paper-api:1.12.2-R0.1-SNAPSHOT")
+}

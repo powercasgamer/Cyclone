@@ -1,0 +1,154 @@
+#!/usr/bin/env bash
+
+# resolve shell-specifics
+case "$(echo "$SHELL" | sed -E 's|/usr(/local)?||g')" in
+    "/bin/zsh")
+        RCPATH="$HOME/.zshrc"
+        SOURCE="${BASH_SOURCE[0]:-${(%):-%N}}"
+    ;;
+    *)
+        RCPATH="$HOME/.bashrc"
+        if [[ -f "$HOME/.bash_aliases" ]]; then
+            RCPATH="$HOME/.bash_aliases"
+        fi
+        SOURCE="${BASH_SOURCE[0]}"
+    ;;
+esac
+
+# checks if branch has something pending
+function parse_git_dirty() {
+  git diff --quiet --ignore-submodules HEAD 2>/dev/null; [ $? -eq 1 ]
+}
+
+# gets the current git branch
+function parse_git_branch() {
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
+}
+
+function get_current_directory() {
+    IFS='/' read -ra ${basedir}
+}
+
+function output() {
+    echo -e '\e[34m'$1'\e[0m';
+}
+
+function get_project_name() {
+    ./gradlew :properties | awk '/^projectName:/ { print $2; }'
+}
+
+function get_project_version() {
+    ./gradlew :properties | awk '/^version:/ { print $2; }'
+}
+
+# get base dir regardless of execution location
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+    DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+    SOURCE="$(readlink "$SOURCE")"
+    [[ "$SOURCE" != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+SOURCE=$([[ "$SOURCE" = /* ]] && echo "$SOURCE" || echo "$PWD/${SOURCE#./}")
+basedir=$(dirname "$SOURCE")
+COMMAND="$1"
+OIFS="$IFS"
+failed=0
+GIT_BRANCH=$(parse_git_branch)
+BRANCH="master"
+PROJ_NAME=$(get_project_name)
+PROJ_VERSION=$(get_project_version)
+set -e
+cd "$basedir"
+case "$COMMAND" in
+    "commit" | "com")
+    (
+        shift
+        ./gradlew licenseFormat
+        git add .
+        git commit -m "$@" -s
+        git push origin "$GIT_BRANCH"
+      #  ./gradlew aggregateJavadoc
+      #  mkdir -p /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
+      #  cp -r build/docs/aggregateJavadoc/** /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
+    ) || failed=1
+    ;;
+    "spam-commit" | "sc")
+    (
+        shift
+        git add .
+        git commit -m "$@" -s
+        git push origin "$GIT_BRANCH"
+    ) || failed=1
+    ;;
+    "release" | "rel")
+    (
+        ./gradlew licenseFormat
+        git add .
+        git commit -m "Release v$2" -s
+        git push origin "$GIT_BRANCH"
+        gh release create "v$2" --generate-notes --title "Release v$2" --target "$GIT_BRANCH"
+        git fetch --tags origin
+        ./gradlew -PforceSign=true publish --no-daemon
+      #  ./gradlew aggregateJavadoc
+      #  mkdir -p /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
+      #  cp -r build/docs/aggregateJavadoc/** /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
+    ) || failed=1
+    ;;
+    "new-branch" | "nb")
+    (
+        git checkout -b "$2"
+        output "Created a new branch called $2"
+    ) || failed=1
+    ;;
+    "switch-branch" | "sb")
+    (
+        git checkout "$2"
+        output "Switched to a branch called $2"
+    ) || failed=1
+    ;;
+    "update-branch" | "ub")
+    (
+        git fetch
+        git pull origin "$GIT_BRANCH" --rebase
+    ) || failed=1
+    ;;
+    "delete-branch" | "db")
+    (
+        git branch -d "$2"
+    ) || failed=1
+    ;;
+    "build")
+    (
+        ./gradlew licenseFormat
+        ./gradlew clean build
+        rm -rf jars/
+        rm jars.zip
+        mkdir jars/
+        cp build/libs/*.jar jars/
+        zip -r jars.zip jars/
+        if [[ "$2" = "--web" ]]; then
+            mkdir -p /var/www/i.deltapvp.net/files/$PROJ_NAME/
+            cp -R jars.zip /var/www/i.deltapvp.net/files/$PROJ_NAME/
+            output "Copied jars to files"
+        fi
+    ) || failed=1
+    ;;
+    "javadoc" | "jd")
+    (
+        echo "aaaa"
+        #./gradlew aggregateJavadoc
+        #mkdir -p /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
+        #cp -r build/docs/aggregateJavadoc/** /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
+    ) || failed=1
+    ;;
+esac
+
+unset RCPATH
+unset SOURCE
+unset basedir
+if [[ "$failed" == "1" ]]; then
+	unset failed
+	false
+else
+	unset failed
+	true
+fi

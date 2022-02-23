@@ -1,0 +1,150 @@
+import org.gradle.plugins.ide.eclipse.model.ProjectDependency
+import org.gradle.plugins.ide.eclipse.model.SourceFolder
+
+apply plugin: "com.github.johnrengelman.shadow"
+apply plugin: "java"
+apply plugin: "java-library"
+apply plugin: "net.kyori.indra"
+apply plugin: "net.kyori.indra.crossdoc"
+apply plugin: "net.kyori.indra.git"
+apply plugin: "net.kyori.indra.publishing"
+//apply plugin: "net.kyori.indra.checkstyle"
+apply plugin: "visual-studio"
+apply plugin: "eclipse"
+apply plugin: "idea"
+apply plugin: "com.gorylenko.gradle-git-properties"
+apply plugin: "org.cadixdev.licenser"
+
+shadowJar {
+    def relocatePattern = providers.gradleProperty("relocatePattern").forUseAtConfigurationTime().get()
+    archiveClassifier.set("")
+    archiveVersion.set("${project.ext.fullVersion}")
+    
+    def toRelocate = [
+    ]
+
+    toRelocate.forEach {
+        relocate(it, "${relocatePattern}" + it)
+    }
+
+    def toExclude = [
+        "**/*.kotlin_metadata", "**/*.kotlin_module", "**/*.kotlin_builtins", 
+        "META-INF/INDEX.LIST", "META-INF/*.SF", "META-INF/*.DSA", 
+        "META-INF/*.RSA", "META-INF/*.idx", "natives/**", "**/module-info.class",
+        "META-INF/maven/**", "META-INF/proguard/**", "META-INF/versions/**",
+        "com/sun/jna/**", "club/minnced/opus/util/**", "tomp2p/opuswrapper/**"
+    ]
+
+    toExclude.forEach {
+        exclude(it)
+    }
+
+    minimize()
+    mergeServiceFiles()
+    manifest {
+        inheritFrom project.tasks.jar.manifest
+    }
+}
+
+tasks.withType(Sign).configureEach {
+    onlyIf { project.hasProperty("forceSign") }
+}
+ 
+signing {
+    useGpgCmd()
+    sign configurations.archives
+    required = true
+}
+
+indra {
+    github(providers.gradleProperty("githubOrg").forUseAtConfigurationTime().get(), providers.gradleProperty("githubRepo").forUseAtConfigurationTime().get())
+    mitLicense()
+
+    javaVersions {
+        testWith(8, 11, 17)
+        target(8)
+        minimumToolchain(17)
+    }
+
+    publishReleasesTo("delta", "https://reposilite.deltapvp.net/releases/")
+    publishSnapshotsTo("delta", "https://reposilite.deltapvp.net/snapshots/")
+}
+
+indraCrossdoc {
+  baseUrl().set(providers.gradleProperty("javadocPublishRoot").forUseAtConfigurationTime())
+  nameBasedDocumentationUrlProvider {
+      version.set("${project.ext.fullVersion}")
+    }
+}
+
+license {
+    header(rootProject.file("./HEADER.txt"))
+    include("**/*.java")
+    include("**/.kt")
+    ignoreFailures(true)
+    newLine(false)
+    properties {
+        name = providers.gradleProperty("projectName").forUseAtConfigurationTime().get()
+        year = "2022"
+        author = "powercas_gamer"
+    }
+}
+
+eclipse {
+    classpath {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+// Replace classpath entries with project dependencies (GRADLE-1116)
+// https://issues.gradle.org/browse/GRADLE-1116
+eclipse.classpath.file.whenMerged { classpath ->
+	def regexp = /.*?\/([^\/]+)\/build\/([^\/]+\/)+(?:main|test)/ // only match those that end in main or test (avoids removing necessary entries like build/classes/jaxb)
+	def projectOutputDependencies = classpath.entries.findAll { entry -> entry.path =~ regexp }
+	projectOutputDependencies.each { entry ->
+		def matcher = (entry.path =~ regexp)
+		if (matcher) {
+			def projectName = matcher[0][1]
+			def path = "/${projectName}"
+			if (!classpath.entries.find { e -> e instanceof ProjectDependency && e.path == path }) {
+				def recursiveDependency = entry.path.matches('.+/' + projectName + '/build/([^/]+/)+(?:main|test)')
+				// Avoid recursive dependency on current project.
+				if (!recursiveDependency) {
+					classpath.entries.add(new ProjectDependency(path))
+				}
+			}
+			classpath.entries.remove(entry)
+		}
+	}
+
+	// Remove any remaining direct depencencies on JARs in the build/libs folder
+	// except Spring's spring-cglib-repack and spring-objenesis-repack JARs.
+	classpath.entries.removeAll { entry -> (entry.path =~ /(?!.*?repack.*\.jar).*?\/([^\/]+)\/build\/libs\/[^\/]+\.jar/) }
+}
+
+eclipse.classpath.file.whenMerged {
+	entries.findAll{ it instanceof SourceFolder }.each {
+		it.output = 'bin/' + it.path.split('/')[1]
+	}
+}
+
+// Ensure project dependencies come after 3rd-party libs (SPR-11836)
+// https://jira.spring.io/browse/SPR-11836
+eclipse.classpath.file.whenMerged {
+	entries.findAll { it instanceof ProjectDependency }.each {
+		// delete from original position
+		entries.remove(it)
+		// append to end of classpath
+		entries.add(it)
+	}
+}
+
+gitProperties {
+    keys = [
+        "git.branch", "git.build.version", "git.closest.tag.commit.count",
+        "git.closest.tag.name", "git.commit.id", "git.commit.id.abbrev",
+        "git.commit.id.describe", "git.commit.message.full", "git.commit.message.short",
+        "git.commit.time", "git.remote.origin.url", "git.tags",
+        "git.total.commit.count", "git.commit.user.name", "git.build.user.name"
+    ]
+}
