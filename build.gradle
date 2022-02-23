@@ -28,7 +28,7 @@ def determineBuildVersion = {
 defaultTasks("shadowjar")
 
 project.ext.majorVersion = "1"
-project.ext.minorVersion = "0"
+project.ext.minorVersion = "1"
 project.ext.patchVersion = "1"
 project.ext.buildVersion = determineBuildVersion()
 project.ext.versionStatus = "-SNAPSHOT"

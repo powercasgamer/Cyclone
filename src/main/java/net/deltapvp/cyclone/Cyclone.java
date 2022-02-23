@@ -31,7 +31,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import net.deltapvp.cyclone.module.api.Module;
-import net.deltapvp.cyclone.module.impl.CommandModule;
+import net.deltapvp.cyclone.module.impl.*;
 
 public final class Cyclone extends JavaPlugin {
     private static Cyclone INSTANCE;
@@ -78,5 +78,6 @@ public final class Cyclone extends JavaPlugin {
 
     void setupModules() {
         modules.add(new CommandModule(this));
+        modules.add(new MessageModule(this));
     }
 }

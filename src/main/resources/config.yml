@@ -6,3 +6,10 @@ modules:
     commands:
       - "(?:mv)(?:h)(?:elp)?"
       - "(?:mv)(?:s)(?:earch)?"
+  message:
+    bypass: "cyclone.bypass.message"
+    punish: "kick %player% Violating filter"
+    enabled: true
+    messages:
+      - "\\$\\{.+\\}" # log4j
+
