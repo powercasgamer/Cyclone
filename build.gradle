@@ -13,17 +13,14 @@ plugins {
 }
 
 def determineBuildVersion = {
-    if (indraGit == null) {
-        return 0
-    }
     if (!indraGit.isPresent()) {
-        return 0
+        return "UNKNOWN"
     }
     if (indraGit.describe() == null) {
-        return 0
+        return "UNKNOWN"
     }
     if (!indraGit.describe().contains("-")) {
-        return 0
+        return "UNKNOWN"
     }
     return indraGit.describe().split("-")[1]
 }
