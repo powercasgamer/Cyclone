@@ -49,6 +49,12 @@ jobs:
         with:
           cache-read-only: "${{ !startsWith(github.ref, 'refs/heads/master/') || github.event_name == 'pull_request' }}"
           arguments: "build"
+          
+      - name: Archive plugin jars on GitHub
+        uses: actions/upload-artifact@master
+        with:
+          name: Cyclone plugin jars
+          path: build/libs/
 
       - name: Cleanup Gradle Cache
       # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
