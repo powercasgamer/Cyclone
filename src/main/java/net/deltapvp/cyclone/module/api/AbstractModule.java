@@ -60,6 +60,11 @@ public abstract class AbstractModule implements Module, Listener {
 		logger.info(() -> "Registered successfully");
 	}
 
+	@Override
+	public boolean isEnabled() {
+		return plugin.getConfig().getBoolean("modules." + name.toLowerCase() + ".enabled");
+	}
+
 	/**
 	 * The name of the module
 	 * 

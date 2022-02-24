@@ -44,6 +44,14 @@ public interface Module {
 	 */
 	default void onDisable() {}
 
+	/**
+	 * Check to see if the module is enabledd
+	 * 
+	 * @return whether or not the module is enabled
+	 */
+	default boolean isEnabled() {
+		return true;
+	}
 
 	/**
 	 * Checks whether or not a player is able to bypass a module

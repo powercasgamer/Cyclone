@@ -42,7 +42,7 @@ public final class Cyclone extends JavaPlugin {
         INSTANCE = this;
         saveDefaultConfig();
         setupModules();
-        modules.forEach(Module::onLoad);
+        modules.stream().filter(Module::isEnabled).forEach(Module::onLoad);
     }
 
     @Override
@@ -63,12 +63,12 @@ public final class Cyclone extends JavaPlugin {
 
         });
 
-        modules.forEach(Module::onEnable);
+        modules.stream().filter(Module::isEnabled).forEach(Module::onEnable);
     }
 
     @Override
     public void onDisable() {
-        modules.forEach(Module::onDisable);
+        modules.stream().filter(Module::isEnabled).forEach(Module::onDisable);
         INSTANCE = null;
     }
 
