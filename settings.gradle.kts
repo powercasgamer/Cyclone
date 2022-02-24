@@ -7,4 +7,4 @@ pluginManagement {
         }
 }
 
-rootProject.name = "Cyclone"
+rootProject.name = "cyclone"

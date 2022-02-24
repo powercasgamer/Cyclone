@@ -31,6 +31,8 @@ import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -52,6 +54,11 @@ public abstract class AbstractModule implements Module, Listener {
 		this.bypassPerm = plugin.getConfig().getString("modules." + name.toLowerCase() + ".bypass");
 		this.punishCmd = plugin.getConfig().getString("modules." + name.toLowerCase() + ".punish");
 		this.logger = Logger.getLogger(plugin.getLogger().getName() + " - " + name);
+
+		if (bypassPerm != null) {
+			Permission perm = new Permission(bypassPerm, PermissionDefault.FALSE);
+			Bukkit.getPluginManager().addPermission(perm);
+		}
 	}
 
 	@Override

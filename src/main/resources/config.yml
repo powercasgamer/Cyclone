@@ -9,7 +9,6 @@ modules:
   message:
     bypass: "cyclone.bypass.message"
     punish: "kick %player% Violating filter"
-    enabled: true
+    enabled: false
     messages:
       - "\\$\\{.+\\}" # log4j
-
