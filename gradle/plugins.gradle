@@ -81,6 +81,7 @@ license {
     header(rootProject.file("./HEADER.txt"))
     include("**/*.java")
     include("**/.kt")
+    exclude("**/FastUUID.java")
     ignoreFailures(true)
     newLine(false)
     properties {

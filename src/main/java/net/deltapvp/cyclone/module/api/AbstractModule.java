@@ -24,15 +24,20 @@
  */
 package net.deltapvp.cyclone.module.api;
 
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import net.deltapvp.cyclone.Cyclone;
+import net.deltapvp.cyclone.util.FastUUID;
 
 public abstract class AbstractModule implements Module, Listener {
 
+	protected final Map<UUID, Integer> punishments = new ConcurrentHashMap<>();
 	private final String name;
 	protected final Logger logger;
 	protected final Plugin plugin;
@@ -65,7 +70,13 @@ public abstract class AbstractModule implements Module, Listener {
 	public void punishPlayer(Player player) {
 		if (punishCmd == null || punishCmd.isEmpty())
 			return;
-		Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-				punishCmd.replace("%player%", player.getName()));
+		punishments.compute(player.getUniqueId(), (uuid, numb) -> {
+			return numb + 1;
+		});
+		String cmd = punishCmd;
+		cmd = cmd.replace("%player%", player.getName());
+		cmd = cmd.replace("%uuid%", FastUUID.toString(player.getUniqueId()));
+		cmd = cmd.replace("%total%", punishments.get(player.getUniqueId()) + "");
+		Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
 	}
 }
