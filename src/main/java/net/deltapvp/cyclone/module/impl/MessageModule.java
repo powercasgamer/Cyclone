@@ -43,7 +43,7 @@ public class MessageModule extends AbstractModule {
     }
 
     @EventHandler
-    public void onPreCmd(AsyncPlayerChatEvent event) {
+    public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         String input = event.getMessage().replace(" ", "").trim();
 

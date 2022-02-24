@@ -49,7 +49,7 @@ public abstract class AbstractModule implements Module, Listener {
 		this.name = name;
 		this.bypassPerm = plugin.getConfig().getString("modules." + name.toLowerCase() + ".bypass");
 		this.punishCmd = plugin.getConfig().getString("modules." + name.toLowerCase() + ".punish");
-		this.logger = Logger.getLogger(plugin.getLogger().getName() + "-" + name);
+		this.logger = Logger.getLogger(plugin.getLogger().getName() + " - " + name);
 	}
 
 	@Override
