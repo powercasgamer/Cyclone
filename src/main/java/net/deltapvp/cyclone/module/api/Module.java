@@ -28,15 +28,34 @@ import org.bukkit.entity.Player;
 
 public interface Module {
 
+	/**
+	 * What the module should execute when its loaded, typically during the onLoad stage of the server
+	 */
 	default void onLoad() {}
 
+	/**
+	 * What the module should execute when its enabled, typically during the onEnable stage of the server
+	 */
 	default void onEnable() {}
 
+	/**
+	 * What the module should execute when its disabled, typically during the onDisable stage of the server
+	 */
 	default void onDisable() {}
 
+
+	/**
+	 * Checks whether or not a player is able to bypass a module
+	 * 
+	 * @param player the player to check
+	 * @return true if the player can bypass it, false if they cannot
+	 */
 	default boolean canBypass(Player player) {
 		return false;
 	}
 
+	/**
+	 * What the module should do when its reloaded
+	 */
 	void reload();
 }

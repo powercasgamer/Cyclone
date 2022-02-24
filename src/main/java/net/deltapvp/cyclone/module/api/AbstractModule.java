@@ -58,6 +58,11 @@ public abstract class AbstractModule implements Module, Listener {
 		logger.info(() -> "Registered successfully");
 	}
 
+	/**
+	 * The name of the module
+	 * 
+	 * @return the name of the module
+	 */
 	public String getName() {
 		return name;
 	}
@@ -67,6 +72,12 @@ public abstract class AbstractModule implements Module, Listener {
 		return player.hasPermission(bypassPerm);
 	}
 
+	/**
+	 * Punish a player based on the module's punish command.
+	 * Possible placeholders are: %player%, %uuid%, %total%
+	 * 
+	 * @param player the player to punish
+	 */
 	public void punishPlayer(Player player) {
 		if (punishCmd == null || punishCmd.isEmpty())
 			return;

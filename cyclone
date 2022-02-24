@@ -66,9 +66,9 @@ case "$COMMAND" in
         git add .
         git commit -m "$@" -s
         git push origin "$GIT_BRANCH"
-      #  ./gradlew aggregateJavadoc
-      #  mkdir -p /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
-      #  cp -r build/docs/aggregateJavadoc/** /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
+        ./gradlew aggregateJavadoc
+        mkdir -p /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
+        cp -r build/docs/aggregateJavadoc/** /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
     ) || failed=1
     ;;
     "spam-commit" | "sc")
@@ -88,9 +88,9 @@ case "$COMMAND" in
         gh release create "v$2" --generate-notes --title "Release v$2" --target "$GIT_BRANCH"
         git fetch --tags origin
         ./gradlew -PforceSign=true publish --no-daemon
-      #  ./gradlew aggregateJavadoc
-      #  mkdir -p /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
-      #  cp -r build/docs/aggregateJavadoc/** /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
+        ./gradlew aggregateJavadoc
+        mkdir -p /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
+        cp -r build/docs/aggregateJavadoc/** /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
     ) || failed=1
     ;;
     "new-branch" | "nb")
@@ -135,9 +135,9 @@ case "$COMMAND" in
     "javadoc" | "jd")
     (
         echo "aaaa"
-        #./gradlew aggregateJavadoc
-        #mkdir -p /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
-        #cp -r build/docs/aggregateJavadoc/** /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
+        ./gradlew aggregateJavadoc
+        mkdir -p /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
+        cp -r build/docs/aggregateJavadoc/** /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
     ) || failed=1
     ;;
 esac
