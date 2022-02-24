@@ -25,6 +25,7 @@
 package net.deltapvp.cyclone.module.api;
 
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public interface Module {
 
@@ -50,7 +51,7 @@ public interface Module {
 	 * @param player the player to check
 	 * @return true if the player can bypass it, false if they cannot
 	 */
-	default boolean canBypass(Player player) {
+	default boolean canBypass(@NotNull Player player) {
 		return false;
 	}
 

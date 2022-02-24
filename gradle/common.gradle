@@ -23,9 +23,6 @@ java {
     if (currentJava < javaVersion) {
         toolchain.languageVersion = javaVersion
     }
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(8)
-    }
         
     withJavadocJar()
     withSourcesJar()
@@ -37,9 +34,7 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
     options.deprecation = true
     options.incremental = true 
-    if (targetJavaVersion >= 10 || currentJava.isJava10Compatible()) {
-        options.release.set(targetJavaVersion)
-    }
+    options.release.set(8)
 }
 
 // abstract archive
@@ -109,27 +104,12 @@ javadoc {
     onlyIf {
         System.getenv("CI") == null && project.hasProperty("run-javadoc")
     }
-    if (currentJava < JavaVersion.VERSION_11 || currentJava == JavaVersion.VERSION_12) {
-       javadocTool.set(javaToolchains.javadocToolFor { this.languageVersion.set(JavaLanguageVersion.of(11)) })
-    }
+//       javadocTool.set(javaToolchains.javadocToolFor { this.languageVersion.set(JavaLanguageVersion.of(17)) })
     title(jdTitle)
     options.links(
         // paper projects
         "https://papermc.io/javadocs/paper/1.12/",
-        // kyori projects
-        "https://jd.adventure.kyori.net/api/${libs.versions.adventure}/",
-        "https://jd.adventure.kyori.net/key/${libs.versions.adventure}/",
-        "https://jd.adventure.kyori.net/text-serializer-legacy/${libs.versions.adventure}/",
-        "https://jd.adventure.kyori.net/text-serializer-plain/${libs.versions.adventure}/",
-        "https://jd.adventure.kyori.net/text-serializer-gson/${libs.versions.adventure}/",
-        "https://javadoc.io/doc/net.kyori/adventure-platform-bukkit/${libs.versions.adventure.platform}/",
-        "https://javadoc.io/doc/net.kyori/adventure-platform-bungeecord/${libs.versions.adventure.platform}/",
-        // google stuff
-        "https://guava.dev/releases/31.0.1-jre/api/docs/",
-        "https://javadoc.io/doc/com.google.code.gson/gson/${libs.versions.gson}/",
-        // apis
-        // misc
-        "https://javadoc.io/doc/org.jetbrains/annotations/${libs.versions.annotations}/"
+        "https://javadoc.io/doc/org.jetbrains/annotations"
     )
 
     setFailOnError(false)
@@ -143,12 +123,12 @@ javadoc {
     options.addBooleanOption('detectJavaApiLink', false)
     options.linkSource()
     options.addBooleanOption("html5", true) 
-    options.addStringOption("-release", "8")
-    if (currentJava > JavaVersion.VERSION_1_8) {
+    //options.addStringOption("-release", "8")
+    //if (currentJava > JavaVersion.VERSION_1_8) {
         options.links.add("https://docs.oracle.com/en/java/javase/17/docs/api/")
-    } else {
-        options.links.add("https://docs.oracle.com/javase/8/docs/api/")
-    }
+    //} else {
+    //    options.links.add("https://docs.oracle.com/javase/8/docs/api/")
+    //}
     if (currentJava > JavaVersion.VERSION_1_8 && currentJava < JavaVersion.VERSION_12) {
         options.addBooleanOption("-no-module-directories", true)
     }
@@ -172,9 +152,7 @@ tasks.named('aggregateJavadoc').configure {
     onlyIf {
         System.getenv("CI") == null && project.hasProperty("run-javadoc")
     }
-    if (currentJava < JavaVersion.VERSION_11 || currentJava == JavaVersion.VERSION_12) {
-       javadocTool.set(javaToolchains.javadocToolFor { this.languageVersion.set(JavaLanguageVersion.of(11)) })
-    }
+  //  javadocTool.set(javaToolchains.javadocToolFor { this.languageVersion.set(JavaLanguageVersion.of(17)) })
     title = "Cyclone ${project.ext.fullVersion}"
     options.addBooleanOption("Xdoclint:-missing", true)
     if (currentJava > JavaVersion.VERSION_1_8 && currentJava < JavaVersion.VERSION_12) {

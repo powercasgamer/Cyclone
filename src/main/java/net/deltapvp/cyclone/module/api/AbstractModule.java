@@ -32,19 +32,21 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import net.deltapvp.cyclone.Cyclone;
 import net.deltapvp.cyclone.util.FastUUID;
 
 public abstract class AbstractModule implements Module, Listener {
 
 	protected final Map<UUID, Integer> punishments = new ConcurrentHashMap<>();
-	private final String name;
-	protected final Logger logger;
-	protected final Plugin plugin;
-	protected final String bypassPerm;
-	protected final String punishCmd;
+	@NotNull private final String name;
+	@NotNull protected final Logger logger;
+	@NotNull protected final Plugin plugin;
+	@NotNull protected final String bypassPerm;
+	@Nullable protected final String punishCmd;
 
-	protected AbstractModule(Cyclone plugin, String name) {
+	protected AbstractModule(@NotNull Cyclone plugin, @NotNull String name) {
 		this.plugin = plugin;
 		this.name = name;
 		this.bypassPerm = plugin.getConfig().getString("modules." + name.toLowerCase() + ".bypass");
@@ -68,7 +70,7 @@ public abstract class AbstractModule implements Module, Listener {
 	}
 
 	@Override
-	public boolean canBypass(Player player) {
+	public boolean canBypass(@NotNull Player player) {
 		return player.hasPermission(bypassPerm);
 	}
 
@@ -78,7 +80,7 @@ public abstract class AbstractModule implements Module, Listener {
 	 * 
 	 * @param player the player to punish
 	 */
-	public void punishPlayer(Player player) {
+	public void punishPlayer(@NotNull Player player) {
 		if (punishCmd == null || punishCmd.isEmpty())
 			return;
 		punishments.compute(player.getUniqueId(), (uuid, numb) -> {

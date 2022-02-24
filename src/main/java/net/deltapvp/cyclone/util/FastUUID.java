@@ -26,6 +26,7 @@ package net.deltapvp.cyclone.util;
 
 import java.util.Arrays;
 import java.util.UUID;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <p>A utility class for quickly and efficiently parsing {@link java.util.UUID} instances from strings and writing UUID
@@ -106,7 +107,7 @@ public class FastUUID {
      * @throws IllegalArgumentException if the given character sequence does not conform to the string representation as
      * described in {@link UUID#toString()}
      */
-    public static UUID parseUUID(final CharSequence uuidSequence) {
+    public static UUID parseUUID(@NotNull final CharSequence uuidSequence) {
         if (uuidSequence.length() != UUID_STRING_LENGTH ||
                 uuidSequence.charAt(8) != '-' ||
                 uuidSequence.charAt(13) != '-' ||
@@ -164,7 +165,7 @@ public class FastUUID {
      *
      * @return a string representation of the given UUID
      */
-    public static String toString(final UUID uuid) {
+    public static String toString(@NotNull final UUID uuid) {
         if (USE_JDK_UUID_TO_STRING) {
             // OpenJDK 9 and newer use a fancy native approach to converting UUIDs to strings and we're better off using
             // that if it's available.
