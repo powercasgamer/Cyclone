@@ -82,7 +82,6 @@ license {
     include("**/*.java")
     include("**/.kt")
     exclude("**/FastUUID.java")
-    ignoreFailures(true)
     newLine(false)
     properties {
         name = providers.gradleProperty("projectName").forUseAtConfigurationTime().get()

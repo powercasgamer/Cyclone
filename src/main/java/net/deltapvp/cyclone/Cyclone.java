@@ -35,7 +35,7 @@ import net.deltapvp.cyclone.module.impl.*;
 
 public final class Cyclone extends JavaPlugin {
     private static Cyclone INSTANCE;
-    private Collection<Module> modules = new ArrayList<>();
+    private Collection<Module> modules = new ArrayList<>(2);
 
     @Override
     public void onLoad() {

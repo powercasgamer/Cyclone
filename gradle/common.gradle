@@ -115,9 +115,7 @@ javadoc {
     title(jdTitle)
     options.links(
         // paper projects
-        "https://papermc.io/javadocs/paper/1.18/",
-        "https://papermc.io/javadocs/waterfall/1.18/",
-        "https://jd.velocitypowered.com/3.0.0/",
+        "https://papermc.io/javadocs/paper/1.12/",
         // kyori projects
         "https://jd.adventure.kyori.net/api/${libs.versions.adventure}/",
         "https://jd.adventure.kyori.net/key/${libs.versions.adventure}/",
@@ -126,37 +124,12 @@ javadoc {
         "https://jd.adventure.kyori.net/text-serializer-gson/${libs.versions.adventure}/",
         "https://javadoc.io/doc/net.kyori/adventure-platform-bukkit/${libs.versions.adventure.platform}/",
         "https://javadoc.io/doc/net.kyori/adventure-platform-bungeecord/${libs.versions.adventure.platform}/",
-        // logging
-        "https://www.slf4j.org/apidocs/",
-        "https://javadoc.io/doc/org.apache.logging.log4j/log4j-api/${libs.versions.log4j}/",
-        "https://javadoc.io/doc/org.apache.logging.log4j/log4j-core/${libs.versions.log4j}/",
-        "https://javadoc.io/doc/org.apache.logging.log4j/log4j-iostreams/${libs.versions.log4j}/",
-        "https://javadoc.io/doc/org.apache.logging.log4j/log4j-jul/${libs.versions.log4j}/",
-        "https://javadoc.io/doc/org.apache.logging.log4j/log4j-jpl/${libs.versions.log4j}/",
-        // okhttp
-     //   "https://square.github.io/okhttp/3.x/okhttp/",
         // google stuff
         "https://guava.dev/releases/31.0.1-jre/api/docs/",
         "https://javadoc.io/doc/com.google.code.gson/gson/${libs.versions.gson}/",
         // apis
-        "https://javadoc.io/doc/net.luckperms/api/${libs.versions.luckperms}/",
-        "https://javadoc.io/doc/cloud.commandframework/cloud-core/${libs.versions.cloud}/",
-        "https://javadoc.io/doc/cloud.commandframework/cloud-velocity/${libs.versions.cloud}/",
-        "https://javadoc.io/doc/cloud.commandframework/cloud-paper/${libs.versions.cloud}/",
-        "https://javadoc.io/doc/cloud.commandframework/cloud-bukkit/${libs.versions.cloud}/",
-        "https://javadoc.io/doc/cloud.commandframework/cloud-minecraft-extras/${libs.versions.cloud}/",
-        "https://javadoc.io/doc/cloud.commandframework/cloud-brigadier/${libs.versions.cloud}/",
-        "https://javadoc.io/doc/cloud.commandframework/cloud-annotations/${libs.versions.cloud}/",
-        "https://javadoc.io/doc/net.dv8tion/JDA/${libs.versions.jda}/",
-        // other libraries
-        "https://javadoc.io/doc/com.github.ben-manes.caffeine/caffeine/${libs.versions.caffeine}/",
-        "https://javadoc.io/doc/redis.clients/jedis/${libs.versions.jedis}/",
-        "https://javadoc.io/doc/org.mongodb/bson/${libs.versions.mongo}/",
-        "https://javadoc.io/doc/org.mongodb/mongodb-driver-sync/${libs.versions.mongo}/",
         // misc
-        "https://javadoc.io/doc/org.jetbrains/annotations/${libs.versions.annotations}/",
-        "https://checkerframework.org/api/",
-        "https://www.javadoc.io/doc/com.google.code.findbugs/jsr305/3.0.2/"
+        "https://javadoc.io/doc/org.jetbrains/annotations/${libs.versions.annotations}/"
     )
 
     setFailOnError(false)
