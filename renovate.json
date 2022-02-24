@@ -1,8 +1,0 @@
-{
-  "extends": [
-    "local>powercasgamer/.github:renovate-config",
-    ":dependencyDashboard"
-  ],
-  "ignoreDeps": [],
-  "packageRules": []
-}
