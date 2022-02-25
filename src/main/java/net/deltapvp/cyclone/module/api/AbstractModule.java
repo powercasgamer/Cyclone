@@ -93,8 +93,9 @@ public abstract class AbstractModule implements Module, Listener {
 	 * @param player the player to punish
 	 */
 	public void punishPlayer(@NotNull Player player) {
-		if (punishCmd == null || punishCmd.isEmpty())
+		if (punishCmd == null || punishCmd.isEmpty()) {
 			return;
+		}
 		punishments.compute(player.getUniqueId(), (uuid, numb) -> {
 			return numb + 1;
 		});

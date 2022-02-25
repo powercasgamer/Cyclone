@@ -21,6 +21,7 @@ shadowJar {
     archiveVersion.set("${project.ext.fullVersion}")
     
     def toRelocate = [
+        "io.leangen.geantyref", "cloud.commandframework", "net.kyori"
     ]
 
     toRelocate.forEach {
@@ -63,7 +64,7 @@ indra {
     javaVersions {
         testWith(8, 11, 17)
         target(8)
-        minimumToolchain(17)
+        minimumToolchain(16)
     }
 
     publishReleasesTo("delta", "https://reposilite.deltapvp.net/releases/")

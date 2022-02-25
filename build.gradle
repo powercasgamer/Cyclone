@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.licenser)
     alias(libs.plugins.gitproperties)
     alias(libs.plugins.javadoc)
+    id("xyz.jpenilla.run-paper") version "1.0.6"
 }
 
 def determineBuildVersion = {
@@ -28,8 +29,8 @@ def determineBuildVersion = {
 defaultTasks("shadowjar")
 
 project.ext.majorVersion = "1"
-project.ext.minorVersion = "1"
-project.ext.patchVersion = "1"
+project.ext.minorVersion = "2"
+project.ext.patchVersion = "0"
 project.ext.buildVersion = determineBuildVersion()
 project.ext.versionStatus = "-SNAPSHOT"
 project.ext.apiVersion = project.ext.majorVersion + "." + project.ext.minorVersion + "." + project.ext.patchVersion
@@ -43,4 +44,14 @@ apply from: "$rootDir/gradle/common.gradle"
 dependencies {
     compileOnly("com.destroystokyo.paper:paper-api:1.12.2-R0.1-SNAPSHOT")
     compileOnly(libs.annotations)
+    api(libs.bundles.cloud)
+    api(libs.adventure.api)
+    api(libs.adventure.platform.bukkit)
+    api(libs.adventure.minimessage)
+}
+
+tasks {
+  runServer {
+    minecraftVersion("1.16.5")
+  }
 }

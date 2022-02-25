@@ -13,6 +13,7 @@ packetevents = "v1.8-pre-19"
 placeholderapi = "2.11.2-DEV-148"
 xseries = "8.6.1"
 javadoc = "6.4.1"
+cloud = "1.6.1"
 [libraries]
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
@@ -28,6 +29,8 @@ adventure-platform-bukkit = { module = "net.kyori:adventure-platform-bukkit", ve
 adventure-platform-bungeecord = { module = "net.kyori:adventure-platform-bungeecord", version.ref = "adventure.platform" }
 packetevents = { module = "com.github.retrooper:packetevents", version.ref = "packetevents" }
 xseries = { module = "com.github.cryptomorin:XSeries", version.ref = "xseries" }
+cloud-paper = { module = "cloud.commandframework:cloud-paper", version.ref = "cloud" }
+cloud-minecraft = { module = "cloud.commandframework:cloud-minecraft-extras", version.ref = "cloud" }
 
 [plugins]
 indra = { id = "net.kyori.indra", version.ref = "indra" }
@@ -42,3 +45,4 @@ javadoc = { id = "io.freefair.aggregate-javadoc", version.ref = "javadoc" }
 
 [bundles]
 adventure = ["adventure-api", "adventure-key", "adventure-gson", "adventure-legacy", "adventure-plain", "adventure-minimessage"]
+cloud = ["cloud-paper", "cloud-minecraft"]
