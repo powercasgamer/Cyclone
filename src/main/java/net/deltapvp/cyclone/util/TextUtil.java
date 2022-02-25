@@ -62,10 +62,11 @@ public class TextUtil {
         String hover = section.getString("hover");
         String click = section.getString("click");
         Component component;
-        if (tags == null || tags.isEmpty()) {
+        if (tags != null && !tags.isEmpty()) {
+            component = MINIMESSAGE.deserialize(content, TagResolver.resolver(tags));
+        } else { 
             component = MINIMESSAGE.deserialize(content);
         }
-        component = MINIMESSAGE.deserialize(content, TagResolver.resolver(tags));
         if (!hover.isEmpty()) {
             component = component.hoverEvent(HoverEvent.showText(parse(hover)));
         }
@@ -83,6 +84,4 @@ public class TextUtil {
     public static void sendMessage(CommandSender sender, Component component) {
         Cyclone.getInstance().getAdventure().sender(sender).sendMessage(component);
     }
-
-
 }

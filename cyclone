@@ -153,10 +153,9 @@ case "$COMMAND" in
         ./gradlew licenseFormat
         ./gradlew clean build
         cd run
-        cp ../build/libs/cyclone-1.2.0-b8-SNAPSHOT.jar plugins/
+        cp ../build/libs/cyclone-1.*.*-b*-SNAPSHOT.jar plugins/
         java -jar paper*.jar
         cd ..
-
     ) || failed=1
     ;;
 esac 

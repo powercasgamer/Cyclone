@@ -135,8 +135,9 @@ public final class Cyclone extends JavaPlugin {
         commandManager.registerExceptionHandler(NoPermissionException.class,
                 (source, exception) -> {
                     TextUtil.sendMessage(source,
-                            TextUtil.parseConfig("messages.no-permission", Arrays.asList(Placeholder
-                                    .unparsed("permission", exception.getMissingPermission()))));
+                            TextUtil.parseConfig("messages.no-permission", Arrays.asList(
+                                Placeholder.unparsed("permission", exception.getMissingPermission()),
+                                Placeholder.unparsed("command", exception.getCurrentChain().get(0).getName()))));
                 });
         commandManager.registerExceptionHandler(InvalidSyntaxException.class,
                 (source, exception) -> {
