@@ -82,6 +82,7 @@ public abstract class AbstractModule implements Module, Listener {
 	 * 
 	 * @return the name of the module
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}

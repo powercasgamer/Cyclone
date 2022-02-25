@@ -22,25 +22,5 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.deltapvp.cyclone.command.impl;
-
-import org.bukkit.command.CommandSender;
-import cloud.commandframework.CommandManager;
-import cloud.commandframework.permission.CommandPermission;
-import cloud.commandframework.permission.Permission;
-import net.deltapvp.cyclone.command.api.BaseCommand;
-
-public class ListCommand extends BaseCommand {
-
-    @Override
-    public void register(CommandManager<CommandSender> commandManager) {
-        commandManager.command(rootBuilder().literal("list")
-        .handler(context -> {
-            // modules here
-            context.getSender().sendMessage("modules or something");
-        })
-        .hidden()
-        .permission(Permission.of("cyclone.command.list"))
-        .build());
-    }
-}
+@org.jetbrains.annotations.ApiStatus.Internal
+package net.deltapvp.cyclone.module.impl;

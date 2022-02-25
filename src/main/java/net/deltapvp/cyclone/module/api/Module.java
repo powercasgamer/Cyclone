@@ -30,6 +30,13 @@ import org.jetbrains.annotations.NotNull;
 public interface Module {
 
 	/**
+	 * Get the modules name
+	 * 
+	 * @return the modules name
+	 */
+	String getName();
+
+	/**
 	 * What the module should execute when its loaded, typically during the onLoad stage of the
 	 * server
 	 */

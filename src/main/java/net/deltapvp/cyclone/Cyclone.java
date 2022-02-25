@@ -27,14 +27,14 @@ package net.deltapvp.cyclone;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
-import com.google.common.base.Objects;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import cloud.commandframework.CommandTree;
 import cloud.commandframework.bukkit.BukkitCommandManager;
 import cloud.commandframework.bukkit.CloudBukkitCapabilities;
-import cloud.commandframework.exceptions.CommandExecutionException;
 import cloud.commandframework.exceptions.InvalidSyntaxException;
 import cloud.commandframework.exceptions.NoPermissionException;
 import cloud.commandframework.execution.AsynchronousCommandExecutionCoordinator;
@@ -42,9 +42,10 @@ import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.minecraft.extras.MinecraftExceptionHandler;
 import cloud.commandframework.minecraft.extras.MinecraftHelp;
 import cloud.commandframework.minecraft.extras.MinecraftHelp.HelpColors;
-import cloud.commandframework.minecraft.extras.MinecraftHelp.MessageProvider;
 import cloud.commandframework.paper.PaperCommandManager;
+import io.leangen.geantyref.TypeToken;
 import net.deltapvp.cyclone.command.api.BaseCommand;
+import net.deltapvp.cyclone.command.arguments.ModuleArgument;
 import net.deltapvp.cyclone.command.impl.HelpCommand;
 import net.deltapvp.cyclone.command.impl.ListCommand;
 import net.deltapvp.cyclone.module.api.Module;
@@ -58,7 +59,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 public final class Cyclone extends JavaPlugin {
     private static Cyclone INSTANCE;
-    private Collection<Module> modules = new ArrayList<>(2);
+    private Map<String, Module> modules = new HashMap<>(2);
     private Collection<BaseCommand> commands = new ArrayList<>(2);
     // cloud
     private BukkitCommandManager<CommandSender> commandManager;
@@ -70,12 +71,12 @@ public final class Cyclone extends JavaPlugin {
         INSTANCE = this;
         saveDefaultConfig();
         setupModules();
-        modules.stream().filter(Module::isEnabled).forEach(Module::onLoad);
+        modules.values().stream().filter(Module::isEnabled).forEach(Module::onLoad);
     }
 
     @Override
     public void onEnable() {
-        modules.stream().filter(Module::isEnabled).forEach(Module::onEnable);
+        modules.values().stream().filter(Module::isEnabled).forEach(Module::onEnable);
         setupCloud();
         setupCommands();
         commands.forEach(cmd -> {
@@ -85,7 +86,7 @@ public final class Cyclone extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        modules.stream().filter(Module::isEnabled).forEach(Module::onDisable);
+        modules.values().stream().filter(Module::isEnabled).forEach(Module::onDisable);
         INSTANCE = null;
     }
 
@@ -94,8 +95,8 @@ public final class Cyclone extends JavaPlugin {
     }
 
     void setupModules() {
-        modules.add(new CommandModule(this));
-        modules.add(new MessageModule(this));
+        modules.put("command", new CommandModule(this));
+        modules.put("message", new MessageModule(this));
     }
 
     void setupCommands() {
@@ -141,17 +142,20 @@ public final class Cyclone extends JavaPlugin {
                 });
         commandManager.registerExceptionHandler(InvalidSyntaxException.class,
                 (source, exception) -> {
+                    String[] syntax = exception.getCorrectSyntax().split(" ");
+
                     TextUtil.sendMessage(source,
                             TextUtil.parseConfig("messages.usage", Arrays.asList(Placeholder
-                                    .unparsed("command", exception.getCorrectSyntax()))));
+                                    .unparsed("command", syntax[0] + " [" + syntax[1] + "]"))));
                 });
+        commandManager.getParserRegistry().registerParserSupplier(TypeToken.get(Module.class), parser -> new ModuleArgument.ModuleParser<>());
     }
 
     public BukkitAudiences getAdventure() {
         return this.bukkitAudiences;
     }
 
-    public Collection<Module> getModules() {
+    public Map<String, Module> getModules() {
         return modules;
     }
 
