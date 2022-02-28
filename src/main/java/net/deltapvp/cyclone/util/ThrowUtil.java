@@ -29,8 +29,7 @@ public class ThrowUtil {
     /**
      * Checks whether or not a CharSequence is null or empty
      * 
-     * @param CharSequence the sequence to check
-     * @throws NPE or ISE if the sequence is null or empty
+     * @param sequence the sequence to check
      */
     public static void checkNullOrEmpty(CharSequence sequence) {
         if (sequence == null) {
@@ -43,8 +42,7 @@ public class ThrowUtil {
     /**
      * Checks whether or not a Number is null or negative
      * 
-     * @param sequence the number to check
-     * @throws NPE or ISE if the number is null or negative
+     * @param number the number to check
      */
     public static void checkNullOrNegative(Number number) {
         if (number == null) {
