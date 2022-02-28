@@ -1,15 +1,19 @@
-name: "build"
+name: Build Pull Request
 
 on:
   push:
-    branches: ["**"]
-    tags-ignore: ["**"]
+    branches:
+    - mc/* # MC version updates
+    - pr/* # PR rebases
   pull_request:
+    branches:
+    - master
+    - feat/*
+    - fix/*
+    - feature/*
+    - mc/*
+    - dev/*
 
-concurrency:
-  group: "${{ github.workflow }}-${{ github.event.number || github.ref }}"
-  cancel-in-progress: true
-  
 jobs:
   build:
     # Only run on PRs if the source branch is on someone else's repo
@@ -40,15 +44,14 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
             ~/.gradle/jdks
-          key: "${{ runner.os }}-deltapvp-${{ hashFiles('**/*.gradle*') }}"
+          key: "${{ runner.os }}-delta-${{ hashFiles('**/*.gradle*') }}"
           restore-keys: |
-            ${{ runner.os }}-deltapvp-
+            ${{ runner.os }}-delta-
 
       - name: "run gradle build"
         uses: "gradle/gradle-build-action@v2"
         with:
-          cache-read-only: "${{ !startsWith(github.ref, 'refs/heads/master/') || github.event_name == 'pull_request' }}"
-          arguments: "build"
+          arguments: "build --stacktrace"
 
       - name: Archive plugin jars on GitHub
         uses: actions/upload-artifact@master
