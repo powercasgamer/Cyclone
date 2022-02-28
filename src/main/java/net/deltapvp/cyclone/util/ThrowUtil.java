@@ -22,24 +22,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.deltapvp.cyclone.command.impl;
+package net.deltapvp.cyclone.util;
 
-import org.bukkit.command.CommandSender;
-import cloud.commandframework.CommandManager;
-import cloud.commandframework.permission.CommandPermission;
-import cloud.commandframework.permission.Permission;
-import net.deltapvp.cyclone.command.api.BaseCommand;
+public class ThrowUtil {
 
-public class ListCommand extends BaseCommand {
+    /**
+     * Checks whether or not a CharSequence is null or empty
+     * 
+     * @param CharSequence the sequence to check
+     * @throws NPE or ISE if the sequence is null or empty
+     */
+    public static void checkNullOrEmpty(CharSequence sequence) {
+        if (sequence == null) {
+            throw new NullPointerException("charsequence cannot be null");
+        } else if (sequence.length() == 0) {
+            throw new IllegalStateException("charsequence cannot be be empty");
+        }
+    }
 
-    @Override
-    public void register(CommandManager<CommandSender> commandManager) {
-        commandManager.command(rootBuilder().literal("list")
-            .handler(context -> {
-
-        })
-            .hidden()
-            .permission(Permission.of("cyclone.command.list"))
-            .build());
+    /**
+     * Checks whether or not a Number is null or negative
+     * 
+     * @param sequence the number to check
+     * @throws NPE or ISE if the number is null or negative
+     */
+    public static void checkNullOrNegative(Number number) {
+        if (number == null) {
+            throw new NullPointerException("number cannot be null");
+        } else if (number.intValue() < 0) {
+            throw new IllegalStateException("number cannot be be negative");
+        }
     }
 }

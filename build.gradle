@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.licenser)
     alias(libs.plugins.gitproperties)
     alias(libs.plugins.javadoc)
-    id("xyz.jpenilla.run-paper") version "1.0.6"
+    alias(libs.plugins.run.paper)
 }
 
 def determineBuildVersion = {
@@ -48,6 +48,7 @@ dependencies {
     api(libs.adventure.api)
     api(libs.adventure.platform.bukkit)
     api(libs.adventure.minimessage)
+    api(libs.adventure.pagination)
 }
 
 tasks {

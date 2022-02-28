@@ -29,6 +29,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnknownNullability;
 import net.deltapvp.cyclone.Cyclone;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -41,23 +42,30 @@ public class TextUtil {
     public final static MiniMessage MINIMESSAGE = MiniMessage.builder()
             .tags(TagResolver.builder().resolvers(StandardTags.color()).build()).build();
         
+    @NotNull
     public static Component parse(@NotNull String content) {
         return parse(content, null);
     }
 
-    public static Component parse(@NotNull String content, @Nullable Collection<TagResolver> tags) {
+    @NotNull
+    public static Component parse(@NotNull String content, @Nullable Collection<@NotNull TagResolver> tags) {
         if (tags == null || tags.isEmpty()) {
             return MINIMESSAGE.deserialize(content);
         }
         return MINIMESSAGE.deserialize(content, TagResolver.resolver(tags));
     }
 
+    @UnknownNullability
     public static Component parseConfig(@NotNull String path) {
         return parse(path, null);
     }
 
-    public static Component parseConfig(@NotNull String path, @Nullable Collection<TagResolver> tags) {
+    @UnknownNullability
+    public static Component parseConfig(@NotNull String path, @Nullable Collection<@NotNull TagResolver> tags) {
         ConfigurationSection section = Cyclone.getInstance().getConfig().getConfigurationSection(path);
+        if (section == null) {
+            return Component.empty();
+        }
         String content = section.getString("text");
         String hover = section.getString("hover");
         String click = section.getString("click");
@@ -77,11 +85,11 @@ public class TextUtil {
         return component;
     }
 
-    public static void sendMessage(CommandSender sender, String content) {
+    public static void sendMessage(@NotNull CommandSender sender, @NotNull String content) {
         sendMessage(sender, parse(content));
     }
 
-    public static void sendMessage(CommandSender sender, Component component) {
+    public static void sendMessage(@NotNull CommandSender sender, @NotNull Component component) {
         Cyclone.getInstance().getAdventure().sender(sender).sendMessage(component);
     }
 }
