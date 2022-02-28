@@ -109,7 +109,9 @@ javadoc {
     options.links(
         // paper projects
         "https://papermc.io/javadocs/paper/1.12/",
-        "https://javadoc.io/doc/org.jetbrains/annotations/23.0.0/"
+        "https://javadoc.io/doc/org.jetbrains/annotations/23.0.0/",
+        "https://javadoc.io/doc/cloud.commandframework/cloud-paper/1.6.1/",
+        "https://javadoc.io/doc/cloud.commandframework/cloud-minecraft/extras/1.6.1/"
     )
 
     setFailOnError(false)

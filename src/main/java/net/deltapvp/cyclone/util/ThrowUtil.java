@@ -22,59 +22,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.deltapvp.cyclone.module.api;
+package net.deltapvp.cyclone.util;
 
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+public class ThrowUtil {
 
-public interface Module {
+    /**
+     * Checks whether or not a CharSequence is null or empty
+     * 
+     * @param sequence the sequence to check
+     */
+    public static void checkNullOrEmpty(CharSequence sequence) {
+        if (sequence == null) {
+            throw new NullPointerException("charsequence cannot be null");
+        } else if (sequence.length() == 0) {
+            throw new IllegalStateException("charsequence cannot be be empty");
+        }
+    }
 
-	/**
-	 * Get the modules name
-	 * 
-	 * @return the modules name
-	 */
-	String getName();
-
-	/**
-	 * What the module should execute when its loaded, typically during the onLoad stage of the
-	 * server
-	 */
-	default void onLoad() {}
-
-	/**
-	 * What the module should execute when its enabled, typically during the onEnable stage of the
-	 * server
-	 */
-	default void onEnable() {}
-
-	/**
-	 * What the module should execute when its disabled, typically during the onDisable stage of the
-	 * server
-	 */
-	default void onDisable() {}
-
-	/**
-	 * Check to see if the module is enabledd
-	 * 
-	 * @return whether or not the module is enabled
-	 */
-	default boolean isEnabled() {
-		return true;
-	}
-
-	/**
-	 * Checks whether or not a player is able to bypass a module
-	 * 
-	 * @param player the player to check
-	 * @return true if the player can bypass it, false if they cannot
-	 */
-	default boolean canBypass(@NotNull Player player) {
-		return false;
-	}
-
-	/**
-	 * What the module should do when its reloaded
-	 */
-	void reload();
+    /**
+     * Checks whether or not a Number is null or negative
+     * 
+     * @param number the number to check
+     */
+    public static void checkNullOrNegative(Number number) {
+        if (number == null) {
+            throw new NullPointerException("number cannot be null");
+        } else if (number.intValue() < 0) {
+            throw new IllegalStateException("number cannot be be negative");
+        }
+    }
 }

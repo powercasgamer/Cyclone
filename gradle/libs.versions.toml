@@ -8,11 +8,14 @@ gitproperties = "2.4.0"
 adventure = "4.10.0-SNAPSHOT"
 guava = "31.0.1-jre"
 adventure-platform = "4.0.1"
+adventure-pagination = "4.0.0-SNAPSHOT"
 blossom = "1.3.0"
 packetevents = "v1.8-pre-19"
 placeholderapi = "2.11.2-DEV-148"
 xseries = "8.6.1"
 javadoc = "6.4.1"
+cloud = "1.6.1"
+run-paper = "1.0.6"
 [libraries]
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
@@ -24,10 +27,13 @@ adventure-legacy = { module = "net.kyori:adventure-text-serializer-legacy", vers
 adventure-plain = { module = "net.kyori:adventure-text-serializer-plain", version.ref = "adventure" }
 adventure-key = { module = "net.kyori:adventure-key", version.ref = "adventure" }
 adventure-minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
+adventure-pagination = { module = "net.kyori:adventure-text-feature-pagination", version.ref = "adventure-pagination" }
 adventure-platform-bukkit = { module = "net.kyori:adventure-platform-bukkit", version.ref = "adventure.platform" }
 adventure-platform-bungeecord = { module = "net.kyori:adventure-platform-bungeecord", version.ref = "adventure.platform" }
 packetevents = { module = "com.github.retrooper:packetevents", version.ref = "packetevents" }
 xseries = { module = "com.github.cryptomorin:XSeries", version.ref = "xseries" }
+cloud-paper = { module = "cloud.commandframework:cloud-paper", version.ref = "cloud" }
+cloud-minecraft = { module = "cloud.commandframework:cloud-minecraft-extras", version.ref = "cloud" }
 
 [plugins]
 indra = { id = "net.kyori.indra", version.ref = "indra" }
@@ -39,6 +45,8 @@ licenser = { id = "org.cadixdev.licenser", version.ref = "licenser" }
 shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
 gitproperties = { id = "com.gorylenko.gradle-git-properties", version.ref = "gitproperties" }
 javadoc = { id = "io.freefair.aggregate-javadoc", version.ref = "javadoc" }
+run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }
 
 [bundles]
 adventure = ["adventure-api", "adventure-key", "adventure-gson", "adventure-legacy", "adventure-plain", "adventure-minimessage"]
+cloud = ["cloud-paper", "cloud-minecraft"]

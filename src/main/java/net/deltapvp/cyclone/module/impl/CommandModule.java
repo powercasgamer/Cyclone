@@ -47,8 +47,9 @@ public class CommandModule extends AbstractModule {
         Player player = event.getPlayer();
         String input = event.getMessage().replace("/", "").replace(" ", "").trim();
 
-        if (canBypass(player))
+        if (canBypass(player)) {
             return;
+        }
 
         Matcher matcher = pattern.matcher(input);
         if (!matcher.matches()) {

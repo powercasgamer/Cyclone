@@ -66,6 +66,7 @@ case "$COMMAND" in
         git add .
         git commit -m "$@" -s
         git push origin "$GIT_BRANCH"
+        ./gradlew publish -Prun-javadoc
         ./gradlew aggregateJavadoc -Prun-javadoc
         mkdir -p /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
         cp -r build/docs/aggregateJavadoc/** /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
@@ -74,6 +75,7 @@ case "$COMMAND" in
     "spam-commit" | "sc")
     (
         shift
+        ./gradlew licenseFormat
         git add .
         git commit -m "$@" -s
         git push origin "$GIT_BRANCH"
@@ -139,7 +141,24 @@ case "$COMMAND" in
         cp -r build/docs/aggregateJavadoc/** /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
     ) || failed=1
     ;;
-esac
+    "license")
+    (
+        ./gradlew licenseFormat
+    ) || failed=1
+    ;;
+    "server")
+    (
+        rm run/plugins/Cyclone/config.yml
+        rm run/plugins/cyclone*.jar
+        ./gradlew licenseFormat
+        ./gradlew clean build
+        cd run
+        cp ../build/libs/cyclone-1.2.0-b*-SNAPSHOT.jar plugins/
+        java -jar paper*.jar
+        cd ..
+    ) || failed=1
+    ;;
+esac 
 
 unset RCPATH
 unset SOURCE

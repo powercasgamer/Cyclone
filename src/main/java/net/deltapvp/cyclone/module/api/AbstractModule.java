@@ -42,11 +42,16 @@ import net.deltapvp.cyclone.util.FastUUID;
 public abstract class AbstractModule implements Module, Listener {
 
 	protected final Map<UUID, Integer> punishments = new ConcurrentHashMap<>();
-	@NotNull private final String name;
-	@NotNull protected final Logger logger;
-	@NotNull protected final Plugin plugin;
-	@NotNull protected final String bypassPerm;
-	@Nullable protected final String punishCmd;
+	@NotNull
+	private final String name;
+	@NotNull
+	protected final Logger logger;
+	@NotNull
+	protected final Plugin plugin;
+	@NotNull
+	protected final String bypassPerm;
+	@Nullable
+	protected final String punishCmd;
 
 	protected AbstractModule(@NotNull Cyclone plugin, @NotNull String name) {
 		this.plugin = plugin;
@@ -77,6 +82,7 @@ public abstract class AbstractModule implements Module, Listener {
 	 * 
 	 * @return the name of the module
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -87,14 +93,15 @@ public abstract class AbstractModule implements Module, Listener {
 	}
 
 	/**
-	 * Punish a player based on the module's punish command.
-	 * Possible placeholders are: %player%, %uuid%, %total%
+	 * Punish a player based on the module's punish command. Possible placeholders are: %player%,
+	 * %uuid%, %total%
 	 * 
 	 * @param player the player to punish
 	 */
 	public void punishPlayer(@NotNull Player player) {
-		if (punishCmd == null || punishCmd.isEmpty())
+		if (punishCmd == null || punishCmd.isEmpty()) {
 			return;
+		}
 		punishments.compute(player.getUniqueId(), (uuid, numb) -> {
 			return numb + 1;
 		});

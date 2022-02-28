@@ -5,9 +5,6 @@ description: Cyclone plugin
 api-version: 1.13
 website: https://github.com/powercasgamer/Cyclone
 author: powercas_gamer
-commands:
-  cyclone:
-    description: Main command for the plugin
 permissions:
   cyclone.reload:
     description: Allows you to reload the plugin

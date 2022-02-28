@@ -22,59 +22,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.deltapvp.cyclone.module.api;
+package net.deltapvp.cyclone.command.api;
 
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.command.CommandSender;
+import cloud.commandframework.Command;
+import cloud.commandframework.CommandManager;
+import cloud.commandframework.meta.CommandMeta;
+import net.deltapvp.cyclone.Cyclone;
 
-public interface Module {
+/**
+ * A command, registered with Cloud's {@link CommandManager} and operates on a {@link CommandSender}
+ * sender.
+ */
+public abstract class BaseCommand {
 
-	/**
-	 * Get the modules name
-	 * 
-	 * @return the modules name
-	 */
-	String getName();
+    /**
+     * Register this command with the {@link CommandManager}.
+     *
+     * @param commandManager The manager to register commands with. This assumes the manager
+     *        supports {@link CommandSender}s as a sender.
+     */
+    public abstract void register(final CommandManager<CommandSender> commandManager);
 
-	/**
-	 * What the module should execute when its loaded, typically during the onLoad stage of the
-	 * server
-	 */
-	default void onLoad() {}
+    public Command.Builder<CommandSender> rootBuilder() {
+        return getPlugin().getCommandManager().commandBuilder("cyclone")
+                .meta(CommandMeta.DESCRIPTION,
+                        String.format("cyclone command. '/%s help'", "cyclone"))
+                .handler(ctx -> {
+                    ctx.getSender().sendMessage("lol");
+                });
+    }
 
-	/**
-	 * What the module should execute when its enabled, typically during the onEnable stage of the
-	 * server
-	 */
-	default void onEnable() {}
+    public Cyclone getPlugin() {
+        return Cyclone.getInstance();
+    }
 
-	/**
-	 * What the module should execute when its disabled, typically during the onDisable stage of the
-	 * server
-	 */
-	default void onDisable() {}
-
-	/**
-	 * Check to see if the module is enabledd
-	 * 
-	 * @return whether or not the module is enabled
-	 */
-	default boolean isEnabled() {
-		return true;
-	}
-
-	/**
-	 * Checks whether or not a player is able to bypass a module
-	 * 
-	 * @param player the player to check
-	 * @return true if the player can bypass it, false if they cannot
-	 */
-	default boolean canBypass(@NotNull Player player) {
-		return false;
-	}
-
-	/**
-	 * What the module should do when its reloaded
-	 */
-	void reload();
 }
