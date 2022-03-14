@@ -64,18 +64,13 @@ indra {
     javaVersions {
         testWith(8, 11, 17)
         target(8)
-        minimumToolchain(16)
+        minimumToolchain(17)
     }
+
+    
 
     publishReleasesTo("delta", "https://reposilite.deltapvp.net/releases/")
     publishSnapshotsTo("delta", "https://reposilite.deltapvp.net/snapshots/")
-}
-
-indraCrossdoc {
-  baseUrl().set(providers.gradleProperty("javadocPublishRoot").forUseAtConfigurationTime())
-  nameBasedDocumentationUrlProvider {
-      version.set("${project.ext.fullVersion}")
-    }
 }
 
 license {

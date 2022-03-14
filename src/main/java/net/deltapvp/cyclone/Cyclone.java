@@ -1,8 +1,8 @@
 /*
  * This file is part of Cyclone, licensed under the MIT License.
  *
- *  Copyright (c) 2022 powercas_gamer
- *  Copyright (c) 2022 contributors
+ *  Copyright (c) 2022-122 powercas_gamer
+ *  Copyright (c) 2022-122 contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,9 +27,11 @@ package net.deltapvp.cyclone;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.logging.Level;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import cloud.commandframework.CommandTree;
@@ -43,6 +45,7 @@ import cloud.commandframework.minecraft.extras.MinecraftExceptionHandler;
 import cloud.commandframework.minecraft.extras.MinecraftHelp;
 import cloud.commandframework.minecraft.extras.MinecraftHelp.HelpColors;
 import cloud.commandframework.paper.PaperCommandManager;
+import io.github.slimjar.app.builder.ApplicationBuilder;
 import io.leangen.geantyref.TypeToken;
 import net.deltapvp.cyclone.command.api.BaseCommand;
 import net.deltapvp.cyclone.command.arguments.ModuleArgument;
@@ -54,6 +57,14 @@ import net.deltapvp.cyclone.module.impl.MessageModule;
 import net.deltapvp.cyclone.util.TextUtil;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
+import java.net.URL;
+import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import com.google.gson.JsonObject;
+import io.github.slimjar.app.builder.ApplicationBuilder;
+import io.github.slimjar.logging.ProcessLogger;
+import io.github.slimjar.resolver.data.Repository;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
@@ -65,10 +76,13 @@ public final class Cyclone extends JavaPlugin {
     private BukkitCommandManager<CommandSender> commandManager;
     private BukkitAudiences bukkitAudiences;
     private MinecraftHelp<CommandSender> minecraftHelp;
+    private static final String[] BLACKLIST =
+            {"Checksum matched", "Resolved", "Verifying checksum", "Downloaded checksum"};
 
     @Override
     public void onLoad() {
         INSTANCE = this;
+        downloadDepends();
         saveDefaultConfig();
         setupModules();
         modules.values().stream().filter(Module::isEnabled).forEach(Module::onLoad);
@@ -92,6 +106,37 @@ public final class Cyclone extends JavaPlugin {
 
     public static Cyclone getInstance() {
         return INSTANCE;
+    }
+
+    void downloadDepends() {
+        try {
+            ApplicationBuilder.appending("Cyclone").logger(new ProcessLogger() {
+                @Override
+                public void log(String arg0, Object... arg1) {
+                    String finalMessage = arg0;
+                    for (int i = 0; i < arg1.length; i++) {
+                        finalMessage = finalMessage.replace("{" + i + "}", arg1[i].toString());
+                    }
+
+                    boolean blacklisted = false;
+                    for (String bl : BLACKLIST) {
+                        if (finalMessage.startsWith(bl)) {
+                            blacklisted = true;
+                            break;
+                        }
+                    }
+                    if (!blacklisted)
+                        getLogger().info(finalMessage);
+                }
+            }).internalRepositories(
+                    Collections.singleton(new Repository(new URL("https://repo.deltapvp.net/"))))
+                .downloadDirectoryPath(getDataFolder().toPath().resolve("libs"))
+                .build();
+        } catch (Throwable thr) {
+            getLogger().log(Level.SEVERE, "error whilst loading dependencies", thr);
+            this.setEnabled(false);
+        }
+
     }
 
     void setupModules() {

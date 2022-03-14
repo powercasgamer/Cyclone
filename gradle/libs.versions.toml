@@ -1,21 +1,17 @@
 [versions]
 gson = "2.9.0"
-shadow = "7.1.2"
-licenser = "0.6.1"
-indra = "2.1.1"
 annotations = "23.0.0"
-gitproperties = "2.4.0"
-adventure = "4.10.0-SNAPSHOT"
+adventure = "4.10.1-SNAPSHOT"
 guava = "31.0.1-jre"
 adventure-platform = "4.0.1"
 adventure-pagination = "4.0.0-SNAPSHOT"
-blossom = "1.3.0"
 packetevents = "1.8-pre-18"
 placeholderapi = "2.11.2-DEV-148"
 xseries = "8.6.1"
-javadoc = "6.4.1"
 cloud = "1.6.1"
 run-paper = "1.0.6"
+delta = "1.0.38-SNAPSHOT"
+
 [libraries]
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
@@ -36,16 +32,8 @@ cloud-paper = { module = "cloud.commandframework:cloud-paper", version.ref = "cl
 cloud-minecraft = { module = "cloud.commandframework:cloud-minecraft-extras", version.ref = "cloud" }
 
 [plugins]
-indra = { id = "net.kyori.indra", version.ref = "indra" }
-indra-git = { id = "net.kyori.indra.git", version.ref = "indra" }
-indra-publishing = { id = "net.kyori.indra.publishing", version.ref = "indra" }
-indra-crossdoc = { id = "net.kyori.indra.crossdoc", version.ref = "indra" }
-blossom = { id = "net.kyori.blossom", version.ref = "blossom" }
-licenser = { id = "org.cadixdev.licenser", version.ref = "licenser" }
-shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
-gitproperties = { id = "com.gorylenko.gradle-git-properties", version.ref = "gitproperties" }
-javadoc = { id = "io.freefair.aggregate-javadoc", version.ref = "javadoc" }
 run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }
+delta = { id = "net.deltapvp.delta", version.ref = "delta" }
 
 [bundles]
 adventure = ["adventure-api", "adventure-key", "adventure-gson", "adventure-legacy", "adventure-plain", "adventure-minimessage"]
