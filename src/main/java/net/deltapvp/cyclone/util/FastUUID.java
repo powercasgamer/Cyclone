@@ -1,8 +1,8 @@
 /*
  * This file is part of Cyclone, licensed under the MIT License.
  *
- *  Copyright (c) 2022-122 powercas_gamer
- *  Copyright (c) 2022-122 contributors
+ *  Copyright (c) 2022 powercas_gamer
+ *  Copyright (c) 2022 contributors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal

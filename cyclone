@@ -89,7 +89,7 @@ case "$COMMAND" in
         git push origin "$GIT_BRANCH"
         gh release create "v$2" --generate-notes --title "Release v$2" --target "$GIT_BRANCH"
         git fetch --tags origin
-        ./gradlew -PforceSign=true publish --no-daemon
+        ./gradlew -PforceSign=true publish --no-daemon -Prun-javadoc
         ./gradlew aggregateJavadoc -Prun-javadoc
         mkdir -p /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
         cp -r build/docs/aggregateJavadoc/** /home/deltapvp/javadocs/$PROJ_NAME/$PROJ_VERSION/
@@ -134,6 +134,13 @@ case "$COMMAND" in
         fi
     ) || failed=1
     ;;
+    "clean")
+    (
+        ./gradlew clean
+        rm -rf jars/
+        rm jars.zip
+    ) || failed=1
+    ;;
     "javadoc" | "jd")
     (
         ./gradlew aggregateJavadoc -Prun-javadoc
@@ -149,11 +156,11 @@ case "$COMMAND" in
     "server")
     (
         rm run/plugins/Cyclone/config.yml
-        rm run/plugins/cyclone*.jar
+        rm run/plugins/*yclone*.jar
         ./gradlew licenseFormat
-        ./gradlew clean build
+        ./gradlew clean shadowjar
         cd run
-        cp ../build/libs/cyclone-1.2.0-b*-SNAPSHOT.jar plugins/
+        cp ../build/libs/cyclone-1.2.0-b21-SNAPSHOT.jar plugins/
         java -jar paper*.jar
         cd ..
     ) || failed=1

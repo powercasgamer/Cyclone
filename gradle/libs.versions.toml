@@ -2,7 +2,7 @@
 gson = "2.9.0"
 annotations = "23.0.0"
 adventure = "4.10.1-SNAPSHOT"
-guava = "31.0.1-jre"
+guava = "31.1-jre"
 adventure-platform = "4.0.1"
 adventure-pagination = "4.0.0-SNAPSHOT"
 packetevents = "1.8-pre-18"
@@ -10,12 +10,14 @@ placeholderapi = "2.11.2-DEV-148"
 xseries = "8.6.1"
 cloud = "1.6.1"
 run-paper = "1.0.6"
-delta = "1.0.38-SNAPSHOT"
+delta = "1.0.57-SNAPSHOT"
+helper = "5.6.9"
 
 [libraries]
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }
+helper = { module = "me.lucko:helper", version.ref = "helper" }
 # adventure
 adventure-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
 adventure-gson = { module = "net.kyori:adventure-text-serializer-gson", version.ref = "adventure" }

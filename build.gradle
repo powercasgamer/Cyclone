@@ -11,14 +11,16 @@ dependencies {
     compileOnly(libs.annotations)
     api(libs.bundles.cloud)
     api(libs.adventure.api)
-    slim(libs.adventure.platform.bukkit)
-    slim(libs.adventure.minimessage)
-    slim(libs.adventure.pagination)
+    api(libs.adventure.platform.bukkit)
+    api(libs.adventure.minimessage)
+    api(libs.adventure.pagination)
+    compileOnly(libs.helper)
+    annotationProcessor(libs.helper)
 }
 
 delta {
     def relocations = [
-        "cloud.commandframework", "io.leangen.geantyref", "net.kyori"
+        "cloud.commandframework", "io.leangen.geantyref", "net.kyori.adventure"
     ]
     relocate(relocations, "net.deltapvp.cyclone.lib.")
 

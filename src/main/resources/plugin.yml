@@ -1,10 +1,12 @@
-name: ${pluginName}
+name: Cyclone
 version: ${pluginVersion}
 main: net.deltapvp.cyclone.Cyclone
 description: ${pluginDescription}
 api-version: 1.13
 website: https://github.com/powercasgamer/Cyclone
 author: ${pluginAuthor}
+depend: [helper]
+depends: [helper]
 permissions:
   cyclone.reload:
     description: Allows you to reload the plugin
