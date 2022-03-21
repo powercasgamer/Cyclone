@@ -33,6 +33,12 @@ delta {
         patch(0)
         status("-SNAPSHOT")
     }
+
+    license {
+        name("MIT License")
+        spdx("MIT")
+        url("https://spdx.org/licenses/MIT.html")
+    }
 }
 
 shadowJar {

@@ -160,7 +160,7 @@ case "$COMMAND" in
         ./gradlew licenseFormat
         ./gradlew clean shadowjar
         cd run
-        cp ../build/libs/cyclone-1.2.0-b21-SNAPSHOT.jar plugins/
+        cp ../build/libs/cyclone-1.2.0-b*-SNAPSHOT.jar plugins/
         java -jar paper*.jar
         cd ..
     ) || failed=1
