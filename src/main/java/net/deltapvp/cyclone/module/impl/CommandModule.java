@@ -30,6 +30,9 @@ import java.util.stream.Collectors;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import io.github.retrooper.packetevents.event.impl.PacketPlayReceiveEvent;
+import io.github.retrooper.packetevents.packettype.PacketType;
+import io.github.retrooper.packetevents.packetwrappers.play.out.chat.WrappedPacketOutChat;
 import net.deltapvp.cyclone.Cyclone;
 import net.deltapvp.cyclone.module.api.AbstractModule;
 
@@ -42,6 +45,26 @@ public class CommandModule extends AbstractModule {
         reload();
     }
 
+    @Override
+    public void onPacketPlayReceive(PacketPlayReceiveEvent event) {
+        Player player = event.getPlayer();
+        if (event.getPacketId() == PacketType.Play.Server.CHAT) {
+            WrappedPacketOutChat packet = new WrappedPacketOutChat(event.getNMSPacket());
+            String input = packet.getMessage().replace("/", "").replace(" ", "").trim();
+            if (canBypass(player)) {
+                return;
+            }
+    
+            Matcher matcher = pattern.matcher(input);
+            if (!matcher.matches()) {
+                return;
+            }
+    
+            event.setCancelled(true);
+            logger.warning(player.getName() + " tried to execute: " + input);
+            punishPlayer(player);
+        }
+        }
     @EventHandler
     public void onPreCmd(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();

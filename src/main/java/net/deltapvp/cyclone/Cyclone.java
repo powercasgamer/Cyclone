@@ -27,13 +27,10 @@ package net.deltapvp.cyclone;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.logging.Level;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
 import cloud.commandframework.CommandTree;
 import cloud.commandframework.bukkit.BukkitCommandManager;
 import cloud.commandframework.bukkit.CloudBukkitCapabilities;
@@ -45,38 +42,26 @@ import cloud.commandframework.minecraft.extras.MinecraftExceptionHandler;
 import cloud.commandframework.minecraft.extras.MinecraftHelp;
 import cloud.commandframework.minecraft.extras.MinecraftHelp.HelpColors;
 import cloud.commandframework.paper.PaperCommandManager;
-import io.github.slimjar.app.builder.ApplicationBuilder;
-import io.leangen.geantyref.TypeToken;
+import io.github.retrooper.packetevents.PacketEvents;
+import io.github.retrooper.packetevents.settings.PacketEventsSettings;
+import io.github.retrooper.packetevents.utils.server.ServerVersion;
 import me.lucko.helper.plugin.ExtendedJavaPlugin;
-import me.lucko.helper.plugin.ap.Plugin;
 import net.deltapvp.cyclone.command.api.BaseCommand;
 import net.deltapvp.cyclone.command.impl.HelpCommand;
 import net.deltapvp.cyclone.command.impl.ListCommand;
 import net.deltapvp.cyclone.module.api.Module;
 import net.deltapvp.cyclone.module.impl.CommandModule;
 import net.deltapvp.cyclone.module.impl.MessageModule;
-import net.deltapvp.cyclone.util.DependencyDownloader;
 import net.deltapvp.cyclone.util.TextUtil;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
-import java.net.URL;
-import java.util.Collections;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CountDownLatch;
-import com.google.gson.JsonObject;
-import io.github.slimjar.app.builder.ApplicationBuilder;
-import io.github.slimjar.logging.ProcessLogger;
-import io.github.slimjar.resolver.data.Repository;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
-//@Plugin(name = "Cyclone", apiVersion = "1.13", version = "123.321")
 public final class Cyclone extends ExtendedJavaPlugin {
     private static Cyclone INSTANCE;
     private Map<String, Module> modules = new HashMap<>(2);
     private Collection<BaseCommand> commands = new ArrayList<>(2);
-    private final CountDownLatch loadLatch = new CountDownLatch(1);
     // cloud
     private BukkitCommandManager<CommandSender> commandManager;
     private BukkitAudiences bukkitAudiences;
@@ -86,12 +71,21 @@ public final class Cyclone extends ExtendedJavaPlugin {
     public void load() {
         INSTANCE = this;
         saveDefaultConfig();
+        PacketEvents.create(this);
+        PacketEventsSettings settings = PacketEvents.get().getSettings();
+        settings
+                .fallbackServerVersion(ServerVersion.v_1_8_8)
+                .compatInjector(false)
+                .checkForUpdates(false)
+                .bStats(true);
+        PacketEvents.get().loadAsyncNewThread();
         setupModules();
         modules.values().stream().filter(Module::isEnabled).forEach(Module::onLoad);
     }
 
     @Override
     public void enable() {
+        PacketEvents.get().init();
         modules.values().stream().filter(Module::isEnabled).forEach(Module::onEnable);
         setupCloud();
         setupCommands();
@@ -103,6 +97,7 @@ public final class Cyclone extends ExtendedJavaPlugin {
     @Override
     public void disable() {
         modules.values().stream().filter(Module::isEnabled).forEach(Module::onDisable);
+        PacketEvents.get().terminate();
         INSTANCE = null;
     }
 

@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer
+
 plugins {
     alias(libs.plugins.run.paper)
     alias(libs.plugins.delta)
@@ -9,6 +11,7 @@ dependencies {
     implementation slimjar("1.2.6")
     compileOnly("com.destroystokyo.paper:paper-api:1.12.2-R0.1-SNAPSHOT")
     compileOnly(libs.annotations)
+    api(libs.packetevents)
     api(libs.bundles.cloud)
     api(libs.adventure.api)
     api(libs.adventure.platform.bukkit)
@@ -20,7 +23,7 @@ dependencies {
 
 delta {
     def relocations = [
-        "cloud.commandframework", "io.leangen.geantyref", "net.kyori.adventure"
+        "cloud.commandframework", "io.leangen.geantyref", "net.kyori", "io.github.retrooper", "com.github.retrooper"
     ]
     relocate(relocations, "net.deltapvp.cyclone.lib.")
 
@@ -30,4 +33,8 @@ delta {
         patch(0)
         status("-SNAPSHOT")
     }
+}
+
+shadowJar {
+    transform(Log4j2PluginsCacheFileTransformer)
 }

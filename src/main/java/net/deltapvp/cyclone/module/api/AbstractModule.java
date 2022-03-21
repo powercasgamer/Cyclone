@@ -38,8 +38,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import net.deltapvp.cyclone.Cyclone;
 import net.deltapvp.cyclone.util.FastUUID;
+import io.github.retrooper.packetevents.PacketEvents;
+import io.github.retrooper.packetevents.event.PacketListenerAbstract;
+import io.github.retrooper.packetevents.event.PacketListenerPriority;
+import io.github.retrooper.packetevents.event.impl.PacketPlayReceiveEvent;
+import io.github.retrooper.packetevents.packettype.PacketType;
+import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
-public abstract class AbstractModule implements Module, Listener {
+public abstract class AbstractModule extends PacketListenerAbstract implements Module, Listener {
 
 	protected final Map<UUID, Integer> punishments = new ConcurrentHashMap<>();
 	@NotNull
@@ -69,6 +77,7 @@ public abstract class AbstractModule implements Module, Listener {
 	@Override
 	public void onEnable() {
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
+		PacketEvents.get().registerListener(this);
 		logger.info(() -> "Registered successfully");
 	}
 
