@@ -10,7 +10,7 @@ placeholderapi = "2.11.2-DEV-148"
 xseries = "8.6.1"
 cloud = "1.6.1"
 run-paper = "1.0.6"
-delta = "1.0.57-SNAPSHOT"
+delta = "1.0.66-SNAPSHOT"
 helper = "5.6.9"
 
 [libraries]
