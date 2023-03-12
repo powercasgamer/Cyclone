@@ -1,5 +1,5 @@
 [versions]
-gson = "2.9.0"
+gson = "2.10.1"
 annotations = "23.0.0"
 adventure = "4.10.1-SNAPSHOT"
 guava = "31.1-jre"
