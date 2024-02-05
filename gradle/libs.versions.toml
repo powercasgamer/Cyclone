@@ -9,7 +9,7 @@ packetevents = "1.8.2"
 placeholderapi = "2.11.2-DEV-148"
 xseries = "8.6.1"
 cloud = "1.6.1"
-run-paper = "1.0.6"
+run-paper = "1.1.0"
 delta = "1.0.67-SNAPSHOT"
 helper = "5.6.9"
 
