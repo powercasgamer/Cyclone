@@ -1,7 +1,7 @@
 [versions]
 gson = "2.9.0"
 annotations = "23.0.0"
-adventure = "4.10.1-SNAPSHOT"
+adventure = "4.16.0"
 guava = "31.1-jre"
 adventure-platform = "4.0.1"
 adventure-pagination = "4.0.0-SNAPSHOT"
